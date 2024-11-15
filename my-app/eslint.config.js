@@ -22,6 +22,16 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   plugins: ['prettier', 'react', 'react-hooks'],
+  ignorePatterns: [
+    '.next',              
+    '.cache',             
+    'node_modules',       
+    'package-lock.json',  
+    'yarn.lock',         
+    'next-env.d.ts',      
+    'next.config.ts',    
+    'public',            
+  ],
   rules: {
     // JavaScript rules
     'prefer-const': 'warn',

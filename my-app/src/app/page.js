@@ -2,7 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 
 export default function Home() {
-    let c =10;
+    let a =10;
     return (
         <div className={styles.page}>
             <main className={styles.main}>

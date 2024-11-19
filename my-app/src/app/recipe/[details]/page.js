@@ -7,6 +7,7 @@ import { API, ApiMethods } from '../../utils/util';
 import isAuth from '../../_components/auth/isAuthenticated';
 import { Messages } from '../../utils/messages';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const RecipeDetails = () => {
   const [recipeDetails, setRecipeDetails] = useState([]);
@@ -64,13 +65,11 @@ const RecipeDetails = () => {
                 </ol>
               )}
             </div>
-            <img
+            <Image
               src={image}
               alt={recipeDetails.title}
-              style={{
-                width: '80%',
-                height: '500px',
-              }}
+              height='500px'
+              width={'80%'}
             />
             <h3>Ingredients:</h3>
             <ul>

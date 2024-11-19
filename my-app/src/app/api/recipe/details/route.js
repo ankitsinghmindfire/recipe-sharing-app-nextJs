@@ -21,6 +21,7 @@ export const GET = async (req) => {
     }
     return NextResponse.json(recipe, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: 'Invalid recipeId' }, { status: 500 });
   }
 };

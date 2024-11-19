@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 
 export async function POST(req) {
   try {
-    await connectDB();
+    connectDB();
     const { username, password, fullName } = await req.json();
     const user = await userSchema.findOne({ username });
 
@@ -21,6 +21,7 @@ export async function POST(req) {
     await newUser.save();
     return NextResponse.json({ message: 'User Registered Successfully' });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },

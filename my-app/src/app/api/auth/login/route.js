@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
   try {
-    await connectDB();
+    connectDB();
     const { username, password } = await req.json();
     const user = await userSchema.findOne({ username });
 

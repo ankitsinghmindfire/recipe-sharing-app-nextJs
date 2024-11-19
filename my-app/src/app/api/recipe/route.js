@@ -72,6 +72,7 @@ export const GET = async (req) => {
     // Return the filtered recipes
     return NextResponse.json(recipes, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },
@@ -114,6 +115,7 @@ export const POST = async (req) => {
     const newRecipe = await recipe.save();
     return NextResponse.json(newRecipe, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },

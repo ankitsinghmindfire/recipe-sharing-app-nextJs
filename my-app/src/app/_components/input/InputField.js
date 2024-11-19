@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const InputField = React.forwardRef(
   ({ label, error, isBr = false, ...props }, ref) => {
@@ -10,12 +10,12 @@ const InputField = React.forwardRef(
         <input ref={ref} {...props} />
         <span className='error'>{error}</span>
       </div>
-    )
+    );
   },
-)
+);
 
 // Adding displayName for better debugging
-InputField.displayName = 'InputField'
+InputField.displayName = 'InputField';
 
 // Prop validation with PropTypes
 InputField.propTypes = {
@@ -27,6 +27,6 @@ InputField.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-}
+};
 
-export default InputField
+export default InputField;

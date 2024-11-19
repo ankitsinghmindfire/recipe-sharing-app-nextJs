@@ -1,5 +1,5 @@
 'use client';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import Image from 'next/image';
 import { cookingTimeData, ratingData } from '@/app/utils/appConstants';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,8 @@ import TextareaField from '@/app/_components/textarea/TextareaField';
 import isAuth from '@/app/_components/auth/isAuthenticated';
 import { request } from '@/app/utils/request';
 import { useRouter } from 'next/navigation';
-import { redirect } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ViewAllRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -21,6 +22,7 @@ const ViewAllRecipes = () => {
   const [comments, setComments] = useState({});
   const [rating, setRating] = useState(0);
   const router = useRouter();
+  const { id, userName } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchRecipes();
@@ -79,6 +81,79 @@ const ViewAllRecipes = () => {
     }
   };
 
+  const handleRatingsFilter = (event) => {
+    const rating = event.target.value;
+    fetchRecipes({ rating }); // Fetch recipes with the selected rating filter
+  };
+
+  // Handler for cooking time filter
+  const handleCookingTimeFilter = (event) => {
+    const cookingTime = event.target.value;
+    fetchRecipes({ cookingTime }); // Fetch recipes with the selected cooking time filter
+  };
+
+  // Handler for resetting filters (optional)
+  const handleResetFilters = () => {
+    fetchRecipes(); // Fetch all recipes when no filters are applied
+  };
+
+  const handleRating = async (rating, recipeId) => {
+    // Send the rating data to the backend to save it
+    try {
+      const response = await request({
+        url: API.recipeAPI.rateRecipe,
+        method: ApiMethods.POST,
+        body: {
+          rating: rating,
+          recipeId: recipeId,
+          userId: id,
+          userName: userName,
+        },
+      });
+      if (!response.error) {
+        setRating(0);
+        toast.success(response.message);
+        fetchRecipes(); // Re-fetch the recipes to show updated ratings
+      } else {
+        toast.error(response?.error); // Show error message if rating fails
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(Messages.errors.RATING_NOT_ADDED);
+    }
+  };
+  const handleAddComment = async (recipeId) => {
+    const comment = comments[recipeId]; // Get the comment for the specific recipe
+    try {
+      // Ensure that the comment is not empty before proceeding
+      if (!comment) {
+        return toast.error(Messages.errors.COMMENT_CAN_NOT_EMPTY);
+      }
+
+      // Send the comment to the backend to save it
+      const response = await request({
+        url: API.recipeAPI.commentRecipe,
+        method: ApiMethods.POST,
+        body: {
+          comment: comment,
+          recipeId: recipeId,
+          userId: id,
+          userName: userName,
+        },
+      });
+      if (!response.error) {
+        setComments('');
+        toast.success(response.message);
+        fetchRecipes(); // Re-fetch recipes to show updated comments
+      } else {
+        toast.error(response?.error);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(Messages.errors.COMMENT_NOT_ADDED);
+    }
+  };
+
   return (
     <div style={{ marginTop: '60px' }}>
       <h1>Recipes</h1>
@@ -90,11 +165,11 @@ const ViewAllRecipes = () => {
             itemsList={ratingData} // Dropdown for rating filter
             label='Ratings  '
             optionStyle={'stars'}
-            // onChange={handleRatingsFilter}
+            onChange={handleRatingsFilter}
           />
           <Button
             className={'clear clear-rating'}
-            // onClick={handleResetFilters}
+            onClick={handleResetFilters}
             id='clear-rating-button'
             aria-label='Clear Rating Filter'
           >
@@ -106,12 +181,12 @@ const ViewAllRecipes = () => {
             id='cookingTime'
             itemsList={cookingTimeData}
             label='CookingTime  '
-            // onChange={handleCookingTimeFilter}
+            onChange={handleCookingTimeFilter}
             optionStyle={'time'}
           />
           <Button
             className={'clear clear-time'}
-            // onClick={handleResetFilters}
+            onClick={handleResetFilters}
             id='clear-time-button'
           >
             Clear Filter

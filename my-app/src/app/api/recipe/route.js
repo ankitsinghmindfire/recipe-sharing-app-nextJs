@@ -8,7 +8,9 @@ export const GET = async (req) => {
     let filterCondition = {};
 
     // Get filters from the query params
-    const { rating, cookingTime } = req.nextUrl.searchParams;
+    const queryParams = req.nextUrl.searchParams;
+    const rating = queryParams.get('rating');
+    const cookingTime = queryParams.get('cookingTime');
 
     // If rating is provided, add it to the filter condition
     if (rating) {
@@ -112,8 +114,6 @@ export const POST = async (req) => {
     const newRecipe = await recipe.save();
     return NextResponse.json(newRecipe, { status: 201 });
   } catch (error) {
-    console.log('error=>', error);
-
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 },

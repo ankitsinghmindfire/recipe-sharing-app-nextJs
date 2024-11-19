@@ -2,22 +2,21 @@
 import Image from 'next/image';
 import menu from '../../../../public/menu.svg';
 import React, { useState } from 'react';
-// import { NavLink, useNavigate } from 'react-router-dom'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { logoutSuccess } from '../../slices/authSlice'
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutSuccess } from '../../slices/authSlice';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  //   const dispatch = useDispatch()
-  //   const navigate = useNavigate()
-  //   const { token } = useSelector((state) => state.auth)
-  const token = false;
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   /**  Function to handle user logout*/
   const LogoutUser = () => {
     localStorage.clear();
     dispatch(logoutSuccess());
-    navigate('/login');
+    redirect('/login');
   };
 
   /**  Function to close the hamburger menu when a link is clicked */
@@ -33,7 +32,7 @@ export const Navbar = () => {
       <nav>
         <div className='nav-left'>
           <Image
-            alt='hi'
+            alt='hamburger-icon'
             src={menu}
             className='hamburger-icon'
             onClick={toggleMenu}
@@ -53,7 +52,7 @@ export const Navbar = () => {
                 </li>
 
                 <li>
-                  <Link href='/addRecipe' onClick={handleToggleMenu}>
+                  <Link href='/recipe/addrecipe' onClick={handleToggleMenu}>
                     Add Recipe
                   </Link>{' '}
                 </li>

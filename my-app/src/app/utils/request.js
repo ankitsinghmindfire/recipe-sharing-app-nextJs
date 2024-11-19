@@ -9,7 +9,6 @@ export const request = async ({
   responseType = 'json',
 }) => {
   const queryString = params ? params : '';
-  console.log('body', body);
 
   try {
     const response = await AxiosInstance({

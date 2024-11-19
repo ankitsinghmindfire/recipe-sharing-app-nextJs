@@ -1,6 +1,9 @@
-import styles from './page.module.css'
-import { Navbar } from './_components/navbar/Navbar'
+import ViewAllRecipes from './recipe/viewrecipes/page';
 
 export default function Home() {
-  return <main></main>
+  return (
+    <main>
+      <ViewAllRecipes />
+    </main>
+  );
 }

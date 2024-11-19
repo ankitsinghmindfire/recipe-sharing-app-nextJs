@@ -1,5 +1,4 @@
 import axios from 'axios';
-console.log('hiii', process.env.NEXT_PUBLIC_BASE_URL);
 
 const AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,

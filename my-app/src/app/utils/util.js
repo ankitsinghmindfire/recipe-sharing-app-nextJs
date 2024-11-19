@@ -11,7 +11,7 @@ export const API = {
   },
   recipeAPI: {
     recipe: 'recipe',
-    searchRecipes: 'searchRecipes',
+    searchRecipes: 'recipe/searchRecipes',
     rateRecipe: 'recipe/rate',
     commentRecipe: 'recipe/comment',
     recipeDetails: 'recipe/details',

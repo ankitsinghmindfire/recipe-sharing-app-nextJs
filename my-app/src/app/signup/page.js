@@ -4,14 +4,11 @@ import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import Button from '../_components/button/Button';
 import InputField from '../_components/input/InputField';
-import { Messages } from '../lib/utils/messages';
-import {
-  emailRegex,
-  passwordRegex,
-  nameRegex,
-} from '../lib/utils/appConstants';
-import { request } from '../lib/utils/request';
-import { API, ApiMethods } from '../lib/utils/util';
+import { Messages } from '../utils/messages';
+import { emailRegex, passwordRegex, nameRegex } from '../utils/appConstants';
+import { request } from '../utils/request';
+import { API, ApiMethods } from '../utils/util';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
   const router = useRouter();

@@ -1,10 +1,20 @@
 'use client';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import Button from '../_components/button/Button';
 import InputField from '../_components/input/InputField';
-import { Messages } from '../lib/utils/messages';
-import { emailRegex, passwordRegex } from '../lib/utils/appConstants';
+import { Messages } from '../utils/messages';
+import { emailRegex, passwordRegex } from '../utils/appConstants';
+import { API, ApiMethods } from '../utils/util';
+import { toast, ToastContainer } from 'react-toastify';
+import { request } from '../utils/request';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../slices/authSlice';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -12,9 +22,43 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async () => {};
+  const onSubmit = async () => {
+    const { username, password } = getValues();
+    try {
+      const data = {
+        username: username,
+        password: password,
+      };
+      const response = await request({
+        url: API.authAPI.login,
+        method: ApiMethods.POST,
+        body: { ...data },
+      });
+      if (response) {
+        if (response.token) {
+          dispatch(
+            loginSuccess({
+              token: response.token,
+              id: response.userId,
+              userName: response.userName,
+            }),
+          );
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('userId', response.userId);
+          localStorage.setItem('userName', response.userName);
+          router.push('/');
+        } else {
+          toast.error(response.error);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(Messages.errors.LOGIN_FAILED);
+    }
+  };
   return (
     <>
+      <ToastContainer />
       <div className='auth-container'>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2>Login</h2>

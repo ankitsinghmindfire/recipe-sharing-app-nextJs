@@ -1,5 +1,5 @@
 import { connectDB } from '@/app/lib/db/connection';
-import { userSchema } from '@/app/lib/models/usersModel';
+import { userSchema } from '@/app/lib/models/userModel';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';

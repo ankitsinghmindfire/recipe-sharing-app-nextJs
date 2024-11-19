@@ -1,5 +1,5 @@
 import { connectDB } from '@/app/lib/db/connection';
-import { userSchema } from '@/app/lib/models/usersModel';
+import { userSchema } from '@/app/lib/models/userModel';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 
@@ -8,7 +8,6 @@ export async function POST(req) {
     await connectDB();
     const { username, password, fullName } = await req.json();
     const user = await userSchema.findOne({ username });
-    console.log('user==>', user);
 
     if (user) {
       return NextResponse.json({ error: 'User already exists' });

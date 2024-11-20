@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true // Add this line for Node.js globals like `require`, `process`, etc.
   },
   "extends": [
     "plugin:react/recommended",
@@ -17,28 +18,33 @@
   },
   "plugins": ["react", "prettier", "testing-library"],
   "overrides": [
-    // Only uses Testing Library lint rules in test files
     {
       "files": [
         "**/__tests__/**/*.[jt]s?(x)",
         "**/?(*.)+(spec|test).[jt]s?(x)"
       ],
       "extends": ["plugin:testing-library/react"]
+    },
+    {
+      "files": ["**/.next/**/*.js", "**/.next/**/*.jsx"], // Ignore unused variables in Webpack files
+      "rules": {
+        "no-unused-vars": "off" // Turn off unused-vars in .next files
+      }
     }
   ],
   "rules": {
     "prettier/prettier": ["error"],
-    "react/react-in-jsx-scope": "off",
+    "react/react-in-jsx-scope": "off", // React 17 and later doesn't need to import React
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
-    "no-undef": "off",
+    "no-undef": "off", // Turn off the `no-undef` rule globally
     "import/no-unresolved": "off",
     "import/extensions": "off",
     "jsx-a11y/anchor-is-valid": "off"
   },
   "settings": {
     "react": {
-      "version": "detect"
+      "version": "detect" // This should automatically detect your React version
     }
   }
 }
